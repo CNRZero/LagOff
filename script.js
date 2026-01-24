@@ -118,26 +118,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Download button click handler
-const downloadBtn = document.getElementById('downloadBtn');
-if (downloadBtn) {
-    downloadBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        // Add download animation
-        downloadBtn.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            downloadBtn.style.transform = 'scale(1)';
-        }, 150);
-        
-        // Here you would typically redirect to actual download link
-        // For now, we'll show an alert
-        alert('Download link will be available soon!\n\nFor now, you can download from the LagOff repository.');
-        
-        // Uncomment and update when you have the actual download URL:
-        // window.location.href = 'https://your-download-url.com/LagOff-Beta5.exe';
-    });
-}
 
 // Feature cards hover effect enhancement
 document.querySelectorAll('.feature-card').forEach(card => {

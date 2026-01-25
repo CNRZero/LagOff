@@ -4,27 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LagOff - Optimize Your Gaming Performance</title>
-    <meta name="description" content="LagOff - Advanced gaming performance optimizer. Reduce lag, boost FPS, and optimize your PC for the best gaming experience.">
+    <meta name="description" content="LagOff - Advanced gaming performance optimizer. Reduce lag, boost FPS, and optimize your PC for the best gaming experience. Currently in development.">
+    <meta name="keywords" content="gaming, FPS boost, lag reduction, PC optimization, gaming performance">
+    <meta name="author" content="LagOff">
+    <meta name="theme-color" content="#6366f1">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="LagOff - Optimize Your Gaming Performance">
+    <meta property="og:description" content="Reduce lag, boost FPS, and unlock your PC's full potential with LagOff's intelligent optimization engine.">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo">LagOff</div>
+            <div class="preloader-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="container">
             <div class="nav-brand">
-                <h1>LagOff</h1>
+                <a href="#home" aria-label="LagOff Home">
+                    <h1>LagOff</h1>
+                </a>
+                <span class="dev-badge">In Development</span>
             </div>
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="navMenu">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#testimonials">Reviews</a></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#about">About</a></li>
             </ul>
-            <button class="nav-toggle" aria-label="Toggle navigation">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -42,6 +68,10 @@
         </div>
         <div class="container">
             <div class="hero-content">
+                <div class="coming-soon-badge">
+                    <span class="badge-dot"></span>
+                    Currently in Development
+                </div>
                 <h1 class="hero-title">
                     <span class="gradient-text">Optimize</span> Your Gaming Performance
                 </h1>
@@ -62,14 +92,25 @@
                         <div class="stat-label">% Less Lag</div>
                     </div>
                 </div>
-                <div class="hero-buttons">
-                    <a href="#features" class="btn btn-primary btn-large">
-                        <span class="btn-icon">🚀</span>
-                        Get Started Free
-                    </a>
-                    <a href="#how-it-works" class="btn btn-secondary btn-large">
-                        Learn More
-                    </a>
+                
+                <!-- Waitlist Signup -->
+                <div class="waitlist-form">
+                    <h3>Get Early Access</h3>
+                    <p>Be the first to know when LagOff launches. Join our waitlist!</p>
+                    <form class="signup-form" id="waitlistForm">
+                        <div class="form-group">
+                            <input type="email" placeholder="Enter your email" required aria-label="Email address">
+                            <button type="submit" class="btn btn-primary">
+                                <span>Join Waitlist</span>
+                                <span class="btn-icon">→</span>
+                            </button>
+                        </div>
+                        <p class="form-note">No spam, ever. Unsubscribe anytime.</p>
+                    </form>
+                    <div class="signup-success" id="signupSuccess" hidden>
+                        <span class="success-icon">✓</span>
+                        <p>You're on the list! We'll notify you when LagOff launches.</p>
+                    </div>
                 </div>
             </div>
             <div class="hero-visual">
@@ -78,6 +119,7 @@
                         <div class="dashboard-dot"></div>
                         <div class="dashboard-dot"></div>
                         <div class="dashboard-dot"></div>
+                        <span class="dashboard-title">LagOff Dashboard</span>
                     </div>
                     <div class="dashboard-content">
                         <div class="metric-card">
@@ -101,7 +143,7 @@
                                 <div class="metric-fill" style="width: 62%"></div>
                             </div>
                         </div>
-                        <div class="metric-card">
+                        <div class="metric-card highlight">
                             <div class="metric-label">FPS</div>
                             <div class="metric-value">144</div>
                             <div class="metric-bar">
@@ -117,30 +159,38 @@
     <!-- How It Works Section -->
     <section id="how-it-works" class="how-it-works">
         <div class="container">
-            <h2 class="section-title">How It Works</h2>
+            <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
             <p class="section-subtitle">Get up and running in minutes with our simple 4-step process</p>
             
             <div class="steps-container">
                 <div class="step-card fade-in">
-                    <div class="step-number">📥</div>
+                    <div class="step-number">
+                        <span>1</span>
+                    </div>
                     <h3>Download</h3>
                     <p>Get the free LagOff installer. No credit card required, no hidden fees.</p>
                 </div>
                 
                 <div class="step-card fade-in">
-                    <div class="step-number">⚙️</div>
+                    <div class="step-number">
+                        <span>2</span>
+                    </div>
                     <h3>Install</h3>
                     <p>Quick installation in under 60 seconds. Works on Windows 10/11.</p>
                 </div>
                 
                 <div class="step-card fade-in">
-                    <div class="step-number">🔍</div>
+                    <div class="step-number">
+                        <span>3</span>
+                    </div>
                     <h3>Analyze</h3>
                     <p>LagOff automatically scans your system and detects installed games.</p>
                 </div>
                 
                 <div class="step-card fade-in">
-                    <div class="step-number">🎮</div>
+                    <div class="step-number">
+                        <span>4</span>
+                    </div>
                     <h3>Play</h3>
                     <p>Launch your game and enjoy optimized performance instantly!</p>
                 </div>
@@ -151,44 +201,72 @@
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
-            <h2 class="section-title">Powerful Features</h2>
+            <h2 class="section-title">Powerful <span class="gradient-text">Features</span></h2>
             <p class="section-subtitle">Everything you need to optimize your gaming experience</p>
             
             <div class="features-grid">
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">🚀</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                    </div>
                     <h3>Auto Optimization</h3>
                     <p>Intelligent engine automatically detects games and applies optimal settings for peak performance. No manual configuration needed.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">📊</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 20V10M12 20V4M6 20v-6"/>
+                        </svg>
+                    </div>
                     <h3>Real-Time Monitoring</h3>
                     <p>Track CPU, GPU, RAM, network, and FPS in real-time with beautiful visualizations and detailed analytics.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">🎮</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="6" width="20" height="12" rx="2"/>
+                            <path d="M6 12h4M12 10v4M16 12h2"/>
+                        </svg>
+                    </div>
                     <h3>Game Profiles</h3>
                     <p>Create custom profiles for each game with advanced settings and optimization presets tailored to your hardware.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">⚡</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                        </svg>
+                    </div>
                     <h3>Process Manager</h3>
                     <p>Identify and optimize resource-heavy processes that impact your gaming performance with one-click solutions.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">🌐</div>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                        </svg>
+                    </div>
                     <h3>Network Optimization</h3>
                     <p>Reduce ping, optimize network settings, and improve online gaming connectivity for lag-free multiplayer.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
-                    <div class="feature-icon">🔧</div>
-                    <h3>Advanced Settings</h3>
-                    <p>Fine-tune CPU affinity, priority, and system settings for maximum control over your gaming experience.</p>
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>Safe & Secure</h3>
+                    <p>No system modifications, no malware. All optimizations are reversible with one click. Your PC is always protected.</p>
                 </div>
             </div>
         </div>
@@ -197,12 +275,12 @@
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials">
         <div class="container">
-            <h2 class="section-title">What Gamers Say</h2>
-            <p class="section-subtitle">Join thousands of satisfied gamers who've transformed their experience</p>
+            <h2 class="section-title">What <span class="gradient-text">Beta Testers</span> Say</h2>
+            <p class="section-subtitle">Early feedback from our beta testing community</p>
             
             <div class="testimonials-grid">
                 <div class="testimonial-card fade-in">
-                    <div class="testimonial-stars">
+                    <div class="testimonial-stars" aria-label="5 out of 5 stars">
                         <span>★</span>
                         <span>★</span>
                         <span>★</span>
@@ -220,7 +298,7 @@
                 </div>
                 
                 <div class="testimonial-card fade-in">
-                    <div class="testimonial-stars">
+                    <div class="testimonial-stars" aria-label="5 out of 5 stars">
                         <span>★</span>
                         <span>★</span>
                         <span>★</span>
@@ -238,7 +316,7 @@
                 </div>
                 
                 <div class="testimonial-card fade-in">
-                    <div class="testimonial-stars">
+                    <div class="testimonial-stars" aria-label="5 out of 5 stars">
                         <span>★</span>
                         <span>★</span>
                         <span>★</span>
@@ -252,6 +330,76 @@
                             <h4>James Wilson</h4>
                             <p>MMO Enthusiast</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+            <p class="section-subtitle">Got questions? We've got answers</p>
+            
+            <div class="faq-container">
+                <div class="faq-item fade-in">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>When will LagOff be available?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>LagOff is currently in active development. We're working hard to bring you the best gaming optimization tool. Join our waitlist to be notified when we launch!</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Is LagOff free to use?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! LagOff will be completely free for all core features. We believe everyone deserves optimal gaming performance without paying a premium.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What games does LagOff support?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>LagOff will support 100+ popular games at launch including Valorant, Fortnite, Call of Duty, League of Legends, Apex Legends, and many more. New games are added regularly.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Is it safe? Will it harm my PC?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely safe! LagOff doesn't modify any system files permanently. All optimizations are temporary and can be reversed with one click. We never install anything harmful.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What are the system requirements?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>LagOff is designed to be lightweight. Requirements: Windows 10/11, 4GB RAM minimum, and an internet connection for updates. It works on both AMD and Intel systems.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item fade-in">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How can I get early access?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Join our waitlist by entering your email at the top of this page. Waitlist members will get early access before the public launch, plus exclusive features.</p>
                     </div>
                 </div>
             </div>
@@ -305,33 +453,72 @@
         <div class="cta-glow"></div>
         <div class="container">
             <div class="cta-container">
+                <div class="cta-badge">
+                    <span class="badge-dot"></span>
+                    Coming Soon
+                </div>
                 <h2>Ready to <span class="gradient-text">Level Up</span>?</h2>
-                <p>Join over 50,000 gamers who've already optimized their gaming experience with LagOff. It's free, fast, and effective.</p>
-                <div class="cta-buttons">
-                    <a href="#home" class="btn btn-primary btn-large">
-                        <span class="btn-icon">⬇️</span>
-                        Download Free
-                    </a>
-                    <a href="#features" class="btn btn-secondary btn-large">
-                        View Features
-                    </a>
+                <p>Be among the first to experience the future of gaming optimization. Join thousands of gamers on our waitlist.</p>
+                
+                <form class="cta-form" id="ctaForm">
+                    <div class="form-group">
+                        <input type="email" placeholder="Enter your email" required aria-label="Email address">
+                        <button type="submit" class="btn btn-primary">
+                            <span>Get Notified</span>
+                        </button>
+                    </div>
+                </form>
+                <div class="cta-success" id="ctaSuccess" hidden>
+                    <span class="success-icon">✓</span>
+                    <p>Awesome! You'll be the first to know when we launch.</p>
+                </div>
+                
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <span class="cta-feature-icon">🎮</span>
+                        <span>100+ Games</span>
+                    </div>
+                    <div class="cta-feature">
+                        <span class="cta-feature-icon">⚡</span>
+                        <span>50% FPS Boost</span>
+                    </div>
+                    <div class="cta-feature">
+                        <span class="cta-feature-icon">🔒</span>
+                        <span>100% Safe</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
                     <h3>LagOff</h3>
-                    <p>The ultimate gaming performance optimizer. Boost your FPS, reduce lag, and dominate every game.</p>
+                    <p>The ultimate gaming performance optimizer. Currently in development - join our waitlist to get early access.</p>
                     <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Twitter">𝕏</a>
-                        <a href="#" class="social-link" aria-label="Discord">💬</a>
-                        <a href="#" class="social-link" aria-label="YouTube">▶️</a>
-                        <a href="#" class="social-link" aria-label="GitHub">⚙️</a>
+                        <a href="#" class="social-link" aria-label="Twitter/X">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Discord">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="footer-column">
@@ -339,7 +526,7 @@
                     <ul>
                         <li><a href="#features">Features</a></li>
                         <li><a href="#how-it-works">How It Works</a></li>
-                        <li><a href="#">Changelog</a></li>
+                        <li><a href="#faq">FAQ</a></li>
                         <li><a href="#">Roadmap</a></li>
                     </ul>
                 </div>
@@ -347,7 +534,7 @@
                     <h4>Support</h4>
                     <ul>
                         <li><a href="#">Documentation</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#faq">FAQ</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Discord Server</a></li>
                     </ul>
@@ -366,6 +553,13 @@
             </div>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+            <path d="M18 15l-6-6-6 6"/>
+        </svg>
+    </button>
 
     <script src="script.js"></script>
 </body>

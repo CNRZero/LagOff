@@ -1,347 +1,553 @@
 // ============================================
 // LagOff - Gaming Performance Optimizer
-// Enhanced JavaScript with Animations
+// Enhanced JavaScript - v2.0
 // ============================================
 
-// DOM Elements
-const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.querySelector('.nav-menu');
-const navbar = document.querySelector('.navbar');
+(function() {
+    'use strict';
 
-// ============================================
-// Navigation
-// ============================================
+    // ============================================
+    // DOM Elements
+    // ============================================
+    
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    const navbar = document.querySelector('.navbar');
+    const preloader = document.getElementById('preloader');
+    const scrollProgress = document.getElementById('scrollProgress');
+    const backToTop = document.getElementById('backToTop');
+    const waitlistForm = document.getElementById('waitlistForm');
+    const ctaForm = document.getElementById('ctaForm');
+    const signupSuccess = document.getElementById('signupSuccess');
+    const ctaSuccess = document.getElementById('ctaSuccess');
+    const faqItems = document.querySelectorAll('.faq-item');
 
-// Mobile menu toggle
-if (navToggle) {
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
+    // ============================================
+    // Preloader
+    // ============================================
+    
+    function hidePreloader() {
+        if (preloader) {
+            preloader.classList.add('hidden');
+            document.body.classList.remove('loading');
+        }
+    }
+
+    // Hide preloader when page loads
+    window.addEventListener('load', () => {
+        setTimeout(hidePreloader, 500);
     });
-}
 
-// Close mobile menu when clicking a link
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.addEventListener('click', () => {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
+    // Fallback: hide preloader after 3 seconds max
+    setTimeout(hidePreloader, 3000);
 
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 80;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
+    // ============================================
+    // Navigation
+    // ============================================
+
+    // Mobile menu toggle
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+            const isOpen = navMenu.classList.contains('active');
+            navToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', !isOpen);
+            
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = isOpen ? '' : 'hidden';
+        });
+
+        // Close mobile menu when clicking a link
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
             });
-        }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const offsetTop = target.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
     });
-});
 
-// Navbar background on scroll
-let lastScroll = 0;
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-    
-    lastScroll = currentScroll;
-});
+    // ============================================
+    // Scroll Events (Optimized)
+    // ============================================
 
-// ============================================
-// Animated Counter
-// ============================================
+    let ticking = false;
+    let lastScrollY = 0;
 
-function animateCounter(element, target, duration = 2000) {
-    const start = 0;
-    const startTime = performance.now();
-    
-    function updateCounter(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
+    function updateOnScroll() {
+        const scrollY = window.pageYOffset;
         
-        // Easing function for smooth animation
-        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        const current = Math.floor(easeOutQuart * target);
-        
-        // Add appropriate suffix
-        let suffix = '+';
-        if (target === 50 || target === 30) {
-            suffix = '%';
-        }
-        
-        element.textContent = current + suffix;
-        
-        if (progress < 1) {
-            requestAnimationFrame(updateCounter);
-        } else {
-            element.textContent = target + suffix;
-        }
-    }
-    
-    requestAnimationFrame(updateCounter);
-}
-
-// ============================================
-// Intersection Observer for Animations
-// ============================================
-
-// Stats animation observer
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-            const statValue = entry.target.querySelector('.stat-value');
-            if (statValue) {
-                const target = parseInt(statValue.getAttribute('data-target'));
-                entry.target.classList.add('animated');
-                animateCounter(statValue, target);
+        // Navbar styling
+        if (navbar) {
+            if (scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
         }
-    });
-}, {
-    threshold: 0.5,
-    rootMargin: '0px'
-});
 
-// Observe all stat items
-document.querySelectorAll('.stat-item').forEach(stat => {
-    statsObserver.observe(stat);
-});
-
-// ============================================
-// Fade-in Animation Observer
-// ============================================
-
-const fadeInObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            // Stagger the animations
-            setTimeout(() => {
-                entry.target.classList.add('visible');
-            }, index * 100);
-            fadeInObserver.unobserve(entry.target);
+        // Scroll progress bar
+        if (scrollProgress) {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollY / docHeight) * 100;
+            scrollProgress.style.width = `${Math.min(progress, 100)}%`;
         }
+
+        // Back to top button
+        if (backToTop) {
+            if (scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }
+
+        // Parallax effect for hero
+        if (scrollY < window.innerHeight) {
+            const heroBackground = document.querySelector('.hero-background');
+            if (heroBackground) {
+                heroBackground.style.transform = `translateY(${scrollY * 0.3}px)`;
+            }
+        }
+
+        lastScrollY = scrollY;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(updateOnScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    // Back to top click handler
+    if (backToTop) {
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // ============================================
+    // Animated Counter
+    // ============================================
+
+    function animateCounter(element, target, duration = 2000) {
+        const startTime = performance.now();
+        
+        function updateCounter(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function (ease-out-quart)
+            const eased = 1 - Math.pow(1 - progress, 4);
+            const current = Math.floor(eased * target);
+            
+            // Determine suffix
+            let suffix = '+';
+            if (target === 50 || target === 30) {
+                suffix = '%';
+            }
+            
+            element.textContent = current + suffix;
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target + suffix;
+            }
+        }
+        
+        requestAnimationFrame(updateCounter);
+    }
+
+    // ============================================
+    // Intersection Observer for Animations
+    // ============================================
+
+    // Stats counter animation
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                const statValue = entry.target.querySelector('.stat-value');
+                if (statValue) {
+                    const target = parseInt(statValue.getAttribute('data-target'));
+                    entry.target.classList.add('animated');
+                    animateCounter(statValue, target);
+                }
+            }
+        });
+    }, {
+        threshold: 0.5,
+        rootMargin: '0px'
     });
-}, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-});
 
-// Observe all fade-in elements
-document.querySelectorAll('.fade-in').forEach(element => {
-    fadeInObserver.observe(element);
-});
+    document.querySelectorAll('.stat-item').forEach(stat => {
+        statsObserver.observe(stat);
+    });
 
-// ============================================
-// Metric Bar Animation
-// ============================================
-
-const metricObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-            entry.target.classList.add('animated');
-            const fills = entry.target.querySelectorAll('.metric-fill');
-            fills.forEach((fill, index) => {
-                const width = fill.style.width;
-                fill.style.width = '0%';
+    // Fade-in animation observer
+    const fadeInObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                // Add stagger delay based on data attribute or index
+                const delay = entry.target.dataset.delay || 0;
                 setTimeout(() => {
-                    fill.style.width = width;
-                }, 200 + (index * 150));
+                    entry.target.classList.add('visible');
+                }, delay);
+                fadeInObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Add stagger delays to fade-in elements
+    document.querySelectorAll('.fade-in').forEach((element, index) => {
+        element.dataset.delay = (index % 6) * 100; // Reset every 6 items
+        fadeInObserver.observe(element);
+    });
+
+    // Metric bar animation
+    const metricObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                entry.target.classList.add('animated');
+                const fills = entry.target.querySelectorAll('.metric-fill');
+                fills.forEach((fill, index) => {
+                    const width = fill.style.width;
+                    fill.style.width = '0%';
+                    setTimeout(() => {
+                        fill.style.width = width;
+                    }, 200 + (index * 150));
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.dashboard-preview').forEach(dashboard => {
+        metricObserver.observe(dashboard);
+    });
+
+    // ============================================
+    // FAQ Accordion
+    // ============================================
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        if (question) {
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+                question.setAttribute('aria-expanded', !isActive);
             });
         }
     });
-}, { threshold: 0.3 });
 
-document.querySelectorAll('.dashboard-preview').forEach(dashboard => {
-    metricObserver.observe(dashboard);
-});
+    // ============================================
+    // Form Handling
+    // ============================================
 
-// ============================================
-// Parallax Effect
-// ============================================
+    function handleFormSubmit(form, successElement) {
+        if (!form || !successElement) return;
 
-let ticking = false;
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const emailInput = form.querySelector('input[type="email"]');
+            const email = emailInput?.value;
+            
+            if (email && isValidEmail(email)) {
+                // Simulate submission (replace with actual API call)
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span>Submitting...</span>';
+                }
 
-function updateParallax() {
-    const scrolled = window.pageYOffset;
-    const heroBackground = document.querySelector('.hero-background');
-    
-    if (heroBackground && scrolled < window.innerHeight) {
-        heroBackground.style.transform = `translateY(${scrolled * 0.3}px)`;
+                // Simulate API delay
+                setTimeout(() => {
+                    form.style.display = 'none';
+                    successElement.hidden = false;
+                    
+                    // Store in localStorage to remember signup
+                    localStorage.setItem('lagoff_waitlist', email);
+                }, 800);
+            }
+        });
     }
-    
-    // Update orbs
-    document.querySelectorAll('.orb').forEach((orb, index) => {
-        const speed = 0.1 + (index * 0.05);
-        orb.style.transform = `translateY(${scrolled * speed}px)`;
-    });
-    
-    ticking = false;
-}
 
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        requestAnimationFrame(updateParallax);
-        ticking = true;
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
-});
 
-// ============================================
-// Feature Card Hover Effects
-// ============================================
+    // Initialize form handlers
+    handleFormSubmit(waitlistForm, signupSuccess);
+    handleFormSubmit(ctaForm, ctaSuccess);
 
-document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('mouseenter', function(e) {
-        // Create ripple effect
-        const ripple = document.createElement('div');
-        ripple.style.cssText = `
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%) scale(0);
-            animation: rippleExpand 0.6s ease-out forwards;
-        `;
-        
-        const rect = this.getBoundingClientRect();
-        ripple.style.left = (e.clientX - rect.left) + 'px';
-        ripple.style.top = (e.clientY - rect.top) + 'px';
-        
-        this.style.position = 'relative';
-        this.style.overflow = 'hidden';
-        this.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
-    });
-});
-
-// Add ripple animation to stylesheet
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes rippleExpand {
-        to {
-            transform: translate(-50%, -50%) scale(4);
-            opacity: 0;
+    // Check if already signed up
+    const savedEmail = localStorage.getItem('lagoff_waitlist');
+    if (savedEmail) {
+        if (waitlistForm && signupSuccess) {
+            waitlistForm.style.display = 'none';
+            signupSuccess.hidden = false;
+        }
+        if (ctaForm && ctaSuccess) {
+            ctaForm.style.display = 'none';
+            ctaSuccess.hidden = false;
         }
     }
-`;
-document.head.appendChild(style);
 
-// ============================================
-// Testimonial Cards Tilt Effect
-// ============================================
+    // ============================================
+    // Feature Card Hover Effects
+    // ============================================
 
-document.querySelectorAll('.testimonial-card').forEach(card => {
-    card.addEventListener('mousemove', function(e) {
-        const rect = this.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
-        
-        this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+    document.querySelectorAll('.feature-card').forEach(card => {
+        card.addEventListener('mouseenter', function(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'hover-ripple';
+            
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+                border-radius: 50%;
+                pointer-events: none;
+                transform: translate(-50%, -50%) scale(0);
+                animation: rippleExpand 0.6s ease-out forwards;
+                left: ${x}px;
+                top: ${y}px;
+            `;
+            
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
     });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-    });
-});
 
-// ============================================
-// Typing Effect for Hero (Optional)
-// ============================================
+    // ============================================
+    // Testimonial Cards Tilt Effect
+    // ============================================
 
-function typeWriter(element, text, speed = 50) {
-    let i = 0;
-    element.textContent = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
+    if (window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('.testimonial-card').forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 25;
+                const rotateY = (centerX - x) / 25;
+                
+                this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        });
     }
-    
-    type();
-}
 
-// ============================================
-// Dashboard Live Update Simulation
-// ============================================
+    // ============================================
+    // Dashboard Live Metrics Simulation
+    // ============================================
 
-function simulateLiveMetrics() {
-    const metricCards = document.querySelectorAll('.dashboard-preview .metric-card');
-    
-    if (metricCards.length === 0) return;
-    
-    // Simulate subtle value changes for visual interest
-    const cpuCard = metricCards[0];
-    const gpuCard = metricCards[1];
-    const ramCard = metricCards[2];
-    const fpsCard = metricCards[3];
-    
-    function updateMetric(card, baseValue, variance, unit = '%') {
-        const valueElement = card.querySelector('.metric-value');
-        const fillElement = card.querySelector('.metric-fill');
-        
-        if (!valueElement || !fillElement) return;
-        
-        const change = (Math.random() - 0.5) * variance;
-        let newValue = baseValue + change;
-        newValue = Math.max(10, Math.min(95, newValue));
-        
-        if (unit === '') {
-            valueElement.textContent = Math.floor(newValue);
-        } else {
+    function simulateLiveMetrics() {
+        const metricCards = document.querySelectorAll('.dashboard-preview .metric-card');
+        if (metricCards.length < 4) return;
+
+        const metrics = [
+            { card: metricCards[0], base: 45, variance: 10, unit: '%' },
+            { card: metricCards[1], base: 78, variance: 8, unit: '%' },
+            { card: metricCards[2], base: 62, variance: 6, unit: '%' }
+        ];
+
+        function updateMetric({ card, base, variance, unit }) {
+            const valueElement = card.querySelector('.metric-value');
+            const fillElement = card.querySelector('.metric-fill');
+            
+            if (!valueElement || !fillElement) return;
+            
+            const change = (Math.random() - 0.5) * variance;
+            let newValue = base + change;
+            newValue = Math.max(10, Math.min(95, newValue));
+            
             valueElement.textContent = Math.floor(newValue) + unit;
-        }
-        
-        if (unit === '%') {
             fillElement.style.width = newValue + '%';
         }
+
+        // Update metrics every 3 seconds
+        setInterval(() => {
+            metrics.forEach(updateMetric);
+        }, 3000);
     }
-    
-    // Update every 3 seconds
-    setInterval(() => {
-        updateMetric(cpuCard, 45, 10);
-        updateMetric(gpuCard, 78, 8);
-        updateMetric(ramCard, 62, 6);
-        // FPS stays stable for better UX perception
-    }, 3000);
-}
 
-// Start live simulation after page load
-setTimeout(simulateLiveMetrics, 2000);
+    // Start simulation after a delay
+    setTimeout(simulateLiveMetrics, 2500);
 
-// ============================================
-// Smooth Reveal on Load
-// ============================================
+    // ============================================
+    // Button Click Ripple Effect
+    // ============================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Add loaded class to body for initial animations
-    document.body.classList.add('loaded');
-    
-    // Trigger initial stat animation if visible
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.className = 'btn-ripple';
+            
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            
+            ripple.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                animation: btnRipple 0.6s ease-out;
+                left: ${e.clientX - rect.left}px;
+                top: ${e.clientY - rect.top}px;
+                pointer-events: none;
+            `;
+            
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+
+    // ============================================
+    // Dynamic Styles
+    // ============================================
+
+    const dynamicStyles = document.createElement('style');
+    dynamicStyles.textContent = `
+        @keyframes rippleExpand {
+            to {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes btnRipple {
+            to {
+                transform: translate(-50%, -50%) scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .hover-ripple {
+            z-index: 0;
+        }
+    `;
+    document.head.appendChild(dynamicStyles);
+
+    // ============================================
+    // Console Branding
+    // ============================================
+
+    console.log(
+        '%c LagOff ',
+        'background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899); color: white; font-size: 24px; font-weight: bold; padding: 10px 20px; border-radius: 8px;'
+    );
+    console.log(
+        '%c Currently in Development - Join our waitlist! ',
+        'color: #10b981; font-size: 14px; padding: 5px 0;'
+    );
+
+    // ============================================
+    // Easter Egg: Konami Code
+    // ============================================
+
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[konamiIndex]) {
+            konamiIndex++;
+            if (konamiIndex === konamiCode.length) {
+                document.body.style.animation = 'rainbow 2s ease-in-out';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 2000);
+                konamiIndex = 0;
+                console.log('%c You found the easter egg! ', 'background: #10b981; color: white; font-size: 16px; padding: 5px 10px; border-radius: 4px;');
+            }
+        } else {
+            konamiIndex = 0;
+        }
+    });
+
+    // Rainbow animation style
+    const rainbowStyle = document.createElement('style');
+    rainbowStyle.textContent = `
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(rainbowStyle);
+
+    // ============================================
+    // Initialize on DOM Ready
+    // ============================================
+
+    // Trigger stats animation if already visible on load
     const heroStats = document.querySelector('.hero-stats');
     if (heroStats) {
         const rect = heroStats.getBoundingClientRect();
-        if (rect.top < window.innerHeight) {
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
             document.querySelectorAll('.stat-item').forEach(stat => {
                 if (!stat.classList.contains('animated')) {
                     const statValue = stat.querySelector('.stat-value');
@@ -354,142 +560,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-});
 
-// ============================================
-// Button Click Effects
-// ============================================
+    // Mark body as loaded
+    document.body.classList.add('loaded');
 
-document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        // Create click ripple
-        const ripple = document.createElement('span');
-        ripple.classList.add('btn-ripple');
-        
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        
-        ripple.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            animation: btnRipple 0.6s ease-out;
-            left: ${e.clientX - rect.left}px;
-            top: ${e.clientY - rect.top}px;
-            pointer-events: none;
-        `;
-        
-        this.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
-    });
-});
-
-// Add button ripple animation
-const btnStyle = document.createElement('style');
-btnStyle.textContent = `
-    @keyframes btnRipple {
-        to {
-            transform: translate(-50%, -50%) scale(4);
-            opacity: 0;
-        }
-    }
-    
-    .btn {
-        position: relative;
-        overflow: hidden;
-    }
-`;
-document.head.appendChild(btnStyle);
-
-// ============================================
-// Console Branding
-// ============================================
-
-console.log(
-    '%c LagOff ',
-    'background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899); color: white; font-size: 24px; font-weight: bold; padding: 10px 20px; border-radius: 8px;'
-);
-console.log(
-    '%c Optimize your gaming performance! ',
-    'color: #94a3b8; font-size: 14px; padding: 5px 0;'
-);
-
-// ============================================
-// Performance: Debounce Utility
-// ============================================
-
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// ============================================
-// Smooth Scroll Progress Indicator (Optional)
-// ============================================
-
-function updateScrollProgress() {
-    const scrollTop = window.pageYOffset;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrollTop / docHeight) * 100;
-    
-    // You can use this progress value to update a progress bar if needed
-    document.documentElement.style.setProperty('--scroll-progress', `${progress}%`);
-}
-
-window.addEventListener('scroll', debounce(updateScrollProgress, 10));
-
-// ============================================
-// Preload Critical Images (if any)
-// ============================================
-
-function preloadImages(urls) {
-    urls.forEach(url => {
-        const img = new Image();
-        img.src = url;
-    });
-}
-
-// ============================================
-// Easter Egg: Konami Code
-// ============================================
-
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let konamiIndex = 0;
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-            // Trigger easter egg
-            document.body.style.animation = 'rainbow 2s ease-in-out';
-            setTimeout(() => {
-                document.body.style.animation = '';
-            }, 2000);
-            konamiIndex = 0;
-        }
-    } else {
-        konamiIndex = 0;
-    }
-});
-
-// Add rainbow animation
-const rainbowStyle = document.createElement('style');
-rainbowStyle.textContent = `
-    @keyframes rainbow {
-        0% { filter: hue-rotate(0deg); }
-        50% { filter: hue-rotate(180deg); }
-        100% { filter: hue-rotate(360deg); }
-    }
-`;
-document.head.appendChild(rainbowStyle);
+})();

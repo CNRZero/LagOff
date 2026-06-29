@@ -14,10 +14,9 @@ A modern, responsive landing page for LagOff, a gaming performance optimization 
 1. **Hero** - Eye-catching introduction with animated stats and live dashboard preview
 2. **How It Works** - 4-step process explaining the tool's simplicity
 3. **Features** - 6 key features with hover effects
-4. **Testimonials** - User reviews with tilt effects
-5. **About** - Benefits and reasons to choose LagOff
-6. **CTA** - Call-to-action section for conversions
-7. **Footer** - Links, social media, and legal information
+4. **About** - Benefits and reasons to choose LagOff
+5. **CTA** - Pre-launch call-to-action with coming-soon messaging
+6. **Footer** - Links, social media, and legal information
 
 ## Technologies
 
